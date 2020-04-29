@@ -12,6 +12,13 @@ function getPeopleData(claims) {
     // number of spouses P26
     var number_of_spouses = (claims['P26'] && claims['P26'].length) || 0;
 
+    // date of burial or cremation (P4602)
+    var date_of_burial = getValueData(claims['P4602'], 'time')
+
+    // place of burial (P119)
+    var place_of_burial = getValueQidAndAddLabel(claims['P119']);
+
+
     html = "";
 
     if(birth_value || death_place){
@@ -35,6 +42,13 @@ function getPeopleData(claims) {
         html +="†";
         html += (death_value ? parseDate(death_value).output + " ": "") ;
         html += (death_place ? "{"+death_place+"}": "") ;
+        html += '<br />'
+    }
+
+    if(date_of_burial || place_of_burial) {
+        html +="† Burial: ";
+        html += (date_of_burial ?  parseDate(date_of_burial).output + " ": "") ;
+        html += (place_of_burial ? "{"+place_of_burial+"}": "") ;
         html += '<br />'
     }
 
